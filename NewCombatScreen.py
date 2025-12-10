@@ -1,48 +1,9 @@
 from tkinter import *
 from Combatant import Combatant
 from Combat import NewCombat
-from combat_state import combat_memory
 
-root = Tk()
-root.title("Combat Tracker")
-root.geometry("400x400")
-
-canvas = Canvas(root)
-canvas.bind_all("<MouseWheel>", lambda event: canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
-scrollbar = Scrollbar(root, orient="vertical", command=canvas.yview)
-canvas.configure(yscrollcommand=scrollbar.set)
-
-menu_frame = Frame(root)
-menu_frame.pack(fill="both", expand=True)
-intro = Label(menu_frame, text="Welcome to Combat Tracker", justify="center", pady=10)
-intro.pack()
-
-def go_to_main_menu():
-    canvas.pack_forget()
-    scrollbar.pack_forget()
-    new_combat_frame.pack_forget()
-    resume_combat_frame.pack_forget()
-    for widget in new_combat_frame.winfo_children():
-        widget.destroy()
-    menu_frame.pack(fill="both", expand=True)
-
-def display_warning(text):
-    empty_combatant_warning = Toplevel(root)
-    empty_combatant_warning.title("Warning")
-    warning_label = Label(empty_combatant_warning, text=f"{text}", pady=10, padx=10, fg="red")
-    warning_label.pack()
-    ok_button = Button(empty_combatant_warning, text="OK", width=10, command=empty_combatant_warning.destroy)
-    ok_button.pack(pady=5)
-
-menu_bar = Menu(root)
-menu = Menu(menu_bar, tearoff=0)
-menu_bar.add_command(label="Menu", command = lambda:(go_to_main_menu(), intro.config(text="Welcome to Combat Tracker")))
-
-new_combat_frame = Frame(root)
-
-resume_combat_frame = Frame(root)
-
-def new_combat_button_click():
+def new_combat_button_click(canvas, scrollbar, new_combat_frame, menu_frame,
+                            combat_memory, go_to_main_menu, display_warning, intro):
     combatant_list = []
     combatant_frames = []
 
@@ -57,7 +18,6 @@ def new_combat_button_click():
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
     window_id = canvas.create_window((200, 0), window=new_combat_frame, anchor="n")
-    #canvas.create_window((0, 0), window=new_combat_frame, anchor="n")
     new_combat_frame.bind("<Configure>", update_scroll_region)
     canvas.bind("<Configure>", update_scroll_region)
 
@@ -118,9 +78,6 @@ def new_combat_button_click():
         combatant_frames.remove(frame_info)
         nonlocal combatant_button_counter
         print(button_info.winfo_name())
-        #combatant_button_counter -= 1
-        #print(f"{frame_info.__str__()}")
-        #print(f"{button_info.__str__()}")
 
     def create_combatant_input():
         info_frame = Frame(new_combat_frame, name=f"combatant_frame_{combatant_button_counter+1}", bd=2, relief="groove")
@@ -151,33 +108,3 @@ def new_combat_button_click():
         remove_combatant_button.grid(row=4, column=0, columnspan=2, pady=10)
 
         info_frame.columnconfigure(1, weight=1)
-
-def resume_combat_button_click():
-    menu_frame.pack_forget()
-    resume_combat_frame.pack(expand=True, fill="both")
-
-    resume_combat_label = Label(resume_combat_frame, text="Combat name: ", justify="center", pady=5)
-    resume_combat_label.pack()
-
-    resume_combat_entry = Entry(resume_combat_frame, width=30)
-    resume_combat_entry.pack(pady=5)
-
-    resume_combat_button = Button(resume_combat_frame, text="Resume", width=15, command="")
-    resume_combat_button.pack(pady=5)
-
-def on_quit():
-    root.destroy()
-
-new_combat_btn = Button(menu_frame, text = "Create Combat", width=15,command =new_combat_button_click)
-new_combat_btn.pack(pady=5)
-
-resume_combat_btn = Button(menu_frame, text = "Resume Combat", width=15,command =resume_combat_button_click)
-resume_combat_btn.pack(pady=5)
-
-quit_btn = Button(menu_frame, text = "Quit", width=15,command =on_quit)
-quit_btn.pack(pady=5)
-
-root.config(menu = menu_bar)
-
-if __name__ == '__main__':
-    root.mainloop()
