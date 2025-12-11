@@ -1,2 +1,1 @@
-
 combat_memory = []

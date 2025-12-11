@@ -51,7 +51,8 @@ new_combat_btn = Button(menu_frame, text = "Create Combat", width=15,
                                                                 display_warning, intro))
 new_combat_btn.pack(pady=5)
 
-resume_combat_btn = Button(menu_frame, text = "Resume Combat", width=15,command = lambda: resume_combat_button_click(menu_frame, resume_combat_frame))
+resume_combat_btn = Button(menu_frame, text = "Resume Combat", width=15,
+                           command = lambda: resume_combat_button_click(menu_frame, resume_combat_frame))
 resume_combat_btn.pack(pady=5)
 
 quit_btn = Button(menu_frame, text = "Quit", width=15,command =on_quit)

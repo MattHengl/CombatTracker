@@ -87,17 +87,17 @@ def new_combat_button_click(canvas, scrollbar, new_combat_frame, menu_frame,
         spacer_label = Label(info_frame, text=f"----------Combatant----------", justify="center", pady=5)
         spacer_label.grid(row=0, column=0, columnspan=2)
 
-        combatant_name_label = Label(info_frame, text="Combatant name: ")
-        combatant_name_label.grid(row=1, column=0, padx=2, pady=2)
+        combatant_name_label = Label(info_frame, text="Name: ")
+        combatant_name_label.grid(row=1, column=0, sticky="w", padx=2, pady=2)
         combatant_name_entry = Entry(info_frame, width=20, name=f"combatant_name_{combatant_button_counter+1}")
         combatant_name_entry.grid(row=1, column=1, sticky="w", padx=2, pady=2)
 
-        combatant_initiative_label = Label(info_frame, text="Combatant Initiative: ")
+        combatant_initiative_label = Label(info_frame, text="Initiative: ")
         combatant_initiative_label.grid(row=2, column=0, sticky="w", padx=2, pady=2)
         combatant_initiative_entry = Entry(info_frame, width=20, name=f"combatant_initiative_{combatant_button_counter+1}")
         combatant_initiative_entry.grid(row=2, column=1, sticky="w", padx=2, pady=2)
 
-        combatant_health_label = Label(info_frame, text="Combatant Health: ")
+        combatant_health_label = Label(info_frame, text="Health: ")
         combatant_health_label.grid(row=3, column=0, sticky="w", padx=2, pady=2)
         combatant_health_entry = Entry(info_frame, width=20, name=f"combatant_health_{combatant_button_counter+1}")
         combatant_health_entry.grid(row=3, column=1, sticky="w", padx=2, pady=2)
