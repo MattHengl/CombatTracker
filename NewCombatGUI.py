@@ -1,6 +1,7 @@
 from tkinter import *
-from Combatant import Combatant
 from Combat import NewCombat
+import NewCombatLogic
+import Combat
 
 def new_combat_button_click(canvas, scrollbar, new_combat_frame, menu_frame,
                             combat_memory, go_to_main_menu, display_warning, intro):
@@ -31,29 +32,12 @@ def new_combat_button_click(canvas, scrollbar, new_combat_frame, menu_frame,
         print(f"Combat Name: {combat_name}")
 
         for frame in combatant_frames:
-            combatant_name = ""
-            initiative = ""
-            health = ""
-
-            for widget in frame.winfo_children():
-                if isinstance(widget, Entry):
-                    widget_name = widget.winfo_name()
-                    if "combatant_name" in widget_name:
-                        combatant_name = widget.get()
-                    elif "combatant_initiative" in widget_name:
-                        initiative = widget.get()
-                    elif "combatant_health" in widget_name:
-                        health = widget.get()
-            print(f"Name: {combatant_name}, Initiative: {initiative}, Health: {health}")
-            if combatant_name and initiative.isdigit() and health.isdigit():
-                combatant_list.append(Combatant(combatant_name, int(initiative), int(health)))
-            else:
-                continue
+            NewCombatLogic.save_button_logic(frame, combatant_list)
         if combat_name:
             if combatant_list:
                 combat_memory.append(NewCombat(combat_name, combatant_list))
                 intro.config(text=f"{combat_name} has been saved!")
-                go_to_main_menu()
+                Combat.CombatGUI(new_combat_frame)
             else:
                 display_warning("No valid combatants to add!")
         else:

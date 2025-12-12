@@ -19,6 +19,13 @@ class Combatant:
         self.lair_actions = lair_actions
         self.lair_actions_used = lair_actions_used
 
+    def __eq__(self, other):
+        if not isinstance(other, Combatant):
+            return False
+        return (self.combatant_name == other.combatant_name and
+                self.initiative == other.initiative and
+                self.health == other.health)
+
     def __repr__(self):
         return f"Combatant(name={self.combatant_name!r}, initiative={self.initiative}, health={self.health})"
 
