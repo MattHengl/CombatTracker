@@ -1,10 +1,4 @@
-from tkinter import *
 from Combatant import Combatant
-
-def validate_and_create_combatant(combatant_name, initiative, health):
-    if combatant_name and initiative.isdigit() and health.isdigit():
-        return Combatant(combatant_name, int(initiative), int(health))
-    return None
 
 def extract_combatant_data(frame):
     combatant_name = ""
@@ -26,9 +20,13 @@ def extract_combatant_data(frame):
         'health': health
     }
 
-
 def save_button_logic(frame, combatant_list):
     data = extract_combatant_data(frame)
     combatant = validate_and_create_combatant(data['name'], data['initiative'], data['health'])
     if combatant:
         combatant_list.append(combatant)
+
+def validate_and_create_combatant(combatant_name, initiative, health):
+    if combatant_name and initiative.isdigit() and health.isdigit():
+        return Combatant(combatant_name, int(initiative), int(health))
+    return None

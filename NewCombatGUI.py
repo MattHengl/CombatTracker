@@ -2,13 +2,13 @@ from tkinter import *
 from Combat import NewCombat
 import NewCombatLogic
 import Combat
+from Combatant import Combatant
 
-def new_combat_button_click(canvas, scrollbar, new_combat_frame, menu_frame,
-                            combat_memory, go_to_main_menu, display_warning, intro):
-    combatant_list = []
+
+def new_combat_button_click(root, canvas, scrollbar, new_combat_frame, display_warning, intro):
+    combatant_list = [Combatant("Matt", 20, 20), Combatant("Lori", 21, 20)]
     combatant_frames = []
 
-    menu_frame.pack_forget()
     new_combat_frame.pack()
     combatant_button_counter = 0
 
@@ -35,9 +35,20 @@ def new_combat_button_click(canvas, scrollbar, new_combat_frame, menu_frame,
             NewCombatLogic.save_button_logic(frame, combatant_list)
         if combat_name:
             if combatant_list:
-                combat_memory.append(NewCombat(combat_name, combatant_list))
-                intro.config(text=f"{combat_name} has been saved!")
-                Combat.CombatGUI(new_combat_frame)
+                #combat_memory.append(NewCombat(combat_name, combatant_list))
+                new_combat = NewCombat(combat_name, combatant_list)
+                intro.config(text=f"{new_combat.combat_name} has been saved!")
+
+                new_combat_frame.pack_forget()
+                canvas.pack_forget()
+                scrollbar.pack_forget()
+
+                #For calling combat.py class. Might not keep this, might just make it not a class for now and then
+                #come back later and refactor to making each of these GUI files a class
+                '''root = new_combat_frame.winfo_toplevel()
+                combat_gui = Combat.CombatGUI(root)
+                combat_gui.pack()'''
+                Combat.combat(root, new_combat)
             else:
                 display_warning("No valid combatants to add!")
         else:
