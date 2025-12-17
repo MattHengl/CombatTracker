@@ -1,3 +1,6 @@
+from config import config
+
+
 class Combatant:
     def __init__(self, combatant_name, initiative, health, death_savings=0, npc=False, boss=False,
                  legendary_resistance=0,legendary_resistance_used=0,
@@ -34,6 +37,7 @@ class Combatant:
 
 
     def set_health(self, health):
+        config.log(f"-----Setting health to: {health}-----")
         self.health = health
 
     def set_death_savings(self, death_savings):

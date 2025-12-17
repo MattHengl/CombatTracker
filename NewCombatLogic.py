@@ -1,4 +1,7 @@
+import combat_state
 from Combatant import Combatant
+from config import config
+
 
 def extract_combatant_data(frame):
     combatant_name = ""
@@ -20,13 +23,15 @@ def extract_combatant_data(frame):
         'health': health
     }
 
-def save_button_logic(frame, combatant_list):
+def save_button_logic(frame):
     data = extract_combatant_data(frame)
     combatant = validate_and_create_combatant(data['name'], data['initiative'], data['health'])
     if combatant:
-        combatant_list.append(combatant)
+        config.log(f"-----Adding {combatant} to combatants-----")
+        combat_state.combatant_list.append(combatant)
 
 def validate_and_create_combatant(combatant_name, initiative, health):
     if combatant_name and initiative.isdigit() and health.isdigit():
+        config.log(f"-----Combatant: {combatant_name, initiative, health}-----")
         return Combatant(combatant_name, int(initiative), int(health))
     return None

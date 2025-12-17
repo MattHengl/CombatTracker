@@ -1,0 +1,6 @@
+{
+  "config": {
+    "log_path" : "./LOGS/",
+    "log_filename_format": "{user}-{date}.txt"
+  }
+}

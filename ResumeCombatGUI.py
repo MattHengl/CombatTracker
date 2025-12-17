@@ -1,6 +1,9 @@
 from tkinter import *
 
-def resume_combat_button_click(menu_frame,resume_combat_frame):
+
+def resume_combat_button_click(menu_frame,resume_combat_frame, display_warning):
+    display_warning("Functionality now implemented yet. Sorry.")
+
     menu_frame.pack_forget()
     resume_combat_frame.pack(expand=True, fill="both")
 

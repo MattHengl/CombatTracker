@@ -1,13 +1,14 @@
 from tkinter import *
+import combat_state
+from config import config
 from Combat import NewCombat
 import NewCombatLogic
 import Combat
-from Combatant import Combatant
 
 
 def new_combat_button_click(root, canvas, scrollbar, new_combat_frame, display_warning, intro):
-    combatant_list = [Combatant("Matt", 20, 20), Combatant("Lori", 21, 20)]
     combatant_frames = []
+    config.log("-----In new_combat_button_click method-----")
 
     new_combat_frame.pack()
     combatant_button_counter = 0
@@ -27,34 +28,7 @@ def new_combat_button_click(root, canvas, scrollbar, new_combat_frame, display_w
     combat_name_entry = Entry(new_combat_frame, width=30)
     combat_name_entry.pack()
 
-    def save_combat_button_click():
-        combat_name = combat_name_entry.get()
-        print(f"Combat Name: {combat_name}")
-
-        for frame in combatant_frames:
-            NewCombatLogic.save_button_logic(frame, combatant_list)
-        if combat_name:
-            if combatant_list:
-                #combat_memory.append(NewCombat(combat_name, combatant_list))
-                new_combat = NewCombat(combat_name, combatant_list)
-                intro.config(text=f"{new_combat.combat_name} has been saved!")
-
-                new_combat_frame.pack_forget()
-                canvas.pack_forget()
-                scrollbar.pack_forget()
-
-                #For calling combat.py class. Might not keep this, might just make it not a class for now and then
-                #come back later and refactor to making each of these GUI files a class
-                '''root = new_combat_frame.winfo_toplevel()
-                combat_gui = Combat.CombatGUI(root)
-                combat_gui.pack()'''
-                Combat.combat(root, new_combat)
-            else:
-                display_warning("No valid combatants to add!")
-        else:
-            display_warning("Combat name cannot be empty!")
-
-    save_combat_button = Button(new_combat_frame, text=f"Save", width=15, command=save_combat_button_click)
+    save_combat_button = Button(new_combat_frame, text=f"Save", width=15, command=lambda: save_combat_button_click())
     save_combat_button.pack(pady=15, anchor="s")
 
     button_container = Frame(new_combat_frame)
@@ -69,12 +43,14 @@ def new_combat_button_click(root, canvas, scrollbar, new_combat_frame, display_w
         combatant_button_counter += 1
 
     def remove_combatant_input(button_info, frame_info):
+        config.log("-----Removing a combatant-----")
         frame_info.pack_forget()
         combatant_frames.remove(frame_info)
         nonlocal combatant_button_counter
         print(button_info.winfo_name())
 
     def create_combatant_input():
+        config.log("-----Adding a combatant-----")
         info_frame = Frame(new_combat_frame, name=f"combatant_frame_{combatant_button_counter+1}", bd=2, relief="groove")
         info_frame.pack(pady=5, anchor="w")
         combatant_frames.append(info_frame)
@@ -103,3 +79,22 @@ def new_combat_button_click(root, canvas, scrollbar, new_combat_frame, display_w
         remove_combatant_button.grid(row=4, column=0, columnspan=2, pady=10)
 
         info_frame.columnconfigure(1, weight=1)
+
+    def save_combat_button_click():
+        combat_name = combat_name_entry.get()
+
+        for frame in combatant_frames:
+            NewCombatLogic.save_button_logic(frame)
+        if combat_name:
+            if combat_state.combatant_list:
+                new_combat = NewCombat(combat_name, combat_state.combatant_list)
+                intro.config(text=f"{new_combat.combat_name} has been saved!")
+                new_combat_frame.pack_forget()
+                canvas.pack_forget()
+                scrollbar.pack_forget()
+                config.log("-----Moving to combat-----")
+                Combat.combat(root, new_combat)
+            else:
+                display_warning("No valid combatants to add!")
+        else:
+            display_warning("Combat name cannot be empty!")
