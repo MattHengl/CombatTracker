@@ -95,6 +95,6 @@ def new_combat_button_click(root, canvas, scrollbar, new_combat_frame, display_w
                 config.log("-----Moving to combat-----")
                 Combat.combat(root, new_combat)
             else:
-                display_warning("No valid combatants to add!")
+                display_warning(new_combat_frame, "No valid combatants to add!")
         else:
-            display_warning("Combat name cannot be empty!")
+            display_warning(new_combat_frame, "Combat name cannot be empty!")

@@ -1,6 +1,7 @@
 import combat_state
 from Combatant import Combatant
 from config import config
+import tkinter as tk
 
 
 def extract_combatant_data(frame):
@@ -28,7 +29,17 @@ def save_button_logic(frame):
     combatant = validate_and_create_combatant(data['name'], data['initiative'], data['health'])
     if combatant:
         config.log(f"-----Adding {combatant} to combatants-----")
-        combat_state.combatant_list.append(combatant)
+        if any(c.combatant_name.lower() == data['name'].lower() for c in combat_state.combatant_list.combatants):
+            warning_window = tk.Toplevel(frame)
+            warning_window.title("Warning")
+            warning_label = tk.Label(warning_window, text="Combatant already exists and cant be added.",
+                                     pady=10, padx=10, fg="red")
+            warning_label.pack()
+            ok_button = tk.Button(warning_window, text="OK", width=10, command=warning_window.destroy)
+            ok_button.pack(pady=5)
+            config.log(f"-----Could not add combatant {data['name']} because they already exist-----")
+        else:
+            combat_state.combatant_list.append(combatant)
 
 def validate_and_create_combatant(combatant_name, initiative, health):
     if combatant_name and initiative.isdigit() and health.isdigit():

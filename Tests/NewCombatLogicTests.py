@@ -1,5 +1,6 @@
 import pytest
 import NewCombatLogic
+import combat_state
 from Combatant import Combatant
 
 
@@ -55,10 +56,10 @@ class Tests:
         assert NewCombatLogic.extract_combatant_data(self.mock_frame) != {'name': "TestGoblin2", 'initiative': "15", 'health': "30"}
 
     def test_save_button_logic(self, setup_teardown_frame, setup_teardown):
-        NewCombatLogic.save_button_logic(self.mock_frame, self.test_combatant_list)
-        assert self.test_combatant_list[0] == Combatant("TestGoblin", 15, 30)
+        NewCombatLogic.save_button_logic(self.mock_frame)
+        assert combat_state.combatant_list[2] == Combatant("TestGoblin", 15, 30)
 
     def test_save_button_logic_invalid(self, setup_teardown_frame, setup_teardown):
-        NewCombatLogic.save_button_logic(self.mock_frame, self.test_combatant_list)
-        assert self.test_combatant_list[0] != Combatant("TestGoblin2", 15, 30)
+        NewCombatLogic.save_button_logic(self.mock_frame)
+        assert combat_state.combatant_list[2] != Combatant("TestGoblin2", 15, 30)
 

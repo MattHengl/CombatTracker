@@ -1,4 +1,5 @@
 from tkinter import *
+
 from NewCombatGUI import new_combat_button_click
 from ResumeCombatGUI import resume_combat_button_click
 from config import config
@@ -30,7 +31,7 @@ new_combat_btn = Button(menu_frame, text = "Create Combat", width=15,
 new_combat_btn.pack(pady=5)
 
 resume_combat_btn = Button(menu_frame, text = "Resume Combat", width=15,
-                           command = lambda: (resume_combat_button_click(menu_frame, resume_combat_frame, display_warning), config.log("----------RESUME COMBAT----------")))
+                           command = lambda: (resume_combat_button_click(menu_frame, resume_combat_frame), config.log("----------RESUME COMBAT----------"), display_warning(root, "Resume Combat feature is under development.")))
 resume_combat_btn.pack(pady=5)
 
 
@@ -61,12 +62,17 @@ def go_to_main_menu():
         combat_frame.destroy()
     except KeyError:
         pass
-    menu_bar.delete("New Combatant")
+    try:
+        if menu_bar.entrycget(menu_bar.index("end"), "label") == "New Combatant":
+            menu_bar.delete("New Combatant")
+    except Exception as e:
+        config.log("-----Errored out on New Combatant-----")
+        config.log(f"-----{e}-----")
     menu_frame.pack(fill="both", expand=True)
 
-def display_warning(text):
+def display_warning(parent_frame, text):
     config.log(f"-----DISPLAY WARNING: {text}-----")
-    empty_combatant_warning = Toplevel(root)
+    empty_combatant_warning = Toplevel(parent_frame)
     empty_combatant_warning.title("Warning")
     warning_label = Label(empty_combatant_warning, text=f"{text}", pady=10, padx=10, fg="red")
     warning_label.pack()

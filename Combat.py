@@ -1,7 +1,6 @@
 import CombatLogic
 from Combatant import Combatant
 import tkinter as tk
-
 from config import config
 
 
@@ -86,15 +85,30 @@ def new_combatant_window(root, combat_frame, new_combat):
     new_combatant_health_entry.grid(row=2, column=1, sticky="w", padx=5, pady=5)
 
     save_button = tk.Button(new_combatant_frame, text="Save", width=10,
-                           command=lambda: (save_new_combatant(new_combatant_name_entry.get(),new_combatant_initiative_entry.get(),
-                                                               new_combatant_health_entry.get()), new_combatant.destroy()))
+                            command=lambda: new_combatant.destroy() if save_new_combatant(
+                                new_combatant_name_entry.get(),
+                                new_combatant_initiative_entry.get(),
+                                new_combatant_health_entry.get()
+                            ) else None)
     save_button.grid(row=3, column=0, columnspan=2, pady=15)
 
     def save_new_combatant(name, initiative, health):
         config.log(f"-----Creating now combatant {name, initiative, health}-----")
+        if any(c.combatant_name.lower() == name.lower() for c in new_combat.combatants):
+            config.log(f"-----Combatant {name} already exists-----")
+            warning_window = tk.Toplevel(new_combatant)
+            warning_window.title("Warning")
+            warning_label = tk.Label(warning_window, text="Combatant already exists and cant be added.",
+                                    pady=10, padx=10, fg="red")
+            warning_label.pack()
+            ok_button = tk.Button(warning_window, text="OK", width=10, command=warning_window.destroy)
+            ok_button.pack(pady=5)
+            config.log(f"-----Could not add combatant {name} because they already exist-----")
+            return False
         new_combat.combatants.append(Combatant(name, int(initiative), int(health)))
         new_combat.combatants.sort(key=lambda combatant: combatant.initiative, reverse=True)
         combat_frame.destroy()
         config.log(f"-----Re-creating combat-----")
         combat(root, new_combat)
+        return True
 
