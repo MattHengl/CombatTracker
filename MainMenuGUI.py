@@ -1,5 +1,4 @@
 from tkinter import *
-
 from NewCombatGUI import new_combat_button_click
 from ResumeCombatGUI import resume_combat_button_click
 from config import config
@@ -20,18 +19,22 @@ intro.pack()
 
 menu_bar = Menu(root, name="menu_bar")
 menu = Menu(menu_bar, tearoff=0)
-menu_bar.add_command(label="Menu", command = lambda:(go_to_main_menu(), intro.config(text="Welcome to Combat Tracker"), config.log("-----MENU BAR BUTTON CLICK-----")))
+menu_bar.add_command(label="Menu", command = lambda:(go_to_main_menu(), intro.config(text="Welcome to Combat Tracker"),
+                                                     config.log("-----MENU BAR BUTTON CLICK-----")))
 
 new_combat_frame = Frame(root, name="new_combat_frame")
 resume_combat_frame = Frame(root, name="resume_combat_frame")
 
 new_combat_btn = Button(menu_frame, text = "Create Combat", width=15,
                         command=lambda: (menu_frame.pack_forget(), new_combat_button_click(root, canvas, scrollbar,
-                                                                new_combat_frame, display_warning, intro), config.log("----------NEW COMBAT----------")))
+                                                                new_combat_frame, display_warning, intro),
+                                         config.log("----------NEW COMBAT----------")))
 new_combat_btn.pack(pady=5)
 
 resume_combat_btn = Button(menu_frame, text = "Resume Combat", width=15,
-                           command = lambda: (resume_combat_button_click(menu_frame, resume_combat_frame), config.log("----------RESUME COMBAT----------"), display_warning(root, "Resume Combat feature is under development.")))
+                           command = lambda: (resume_combat_button_click(menu_frame, resume_combat_frame),
+                                              config.log("----------RESUME COMBAT----------"),
+                                              display_warning(root, "Resume Combat feature is under development.")))
 resume_combat_btn.pack(pady=5)
 
 
