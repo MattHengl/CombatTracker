@@ -29,7 +29,7 @@ def save_button_logic(frame):
     combatant = validate_and_create_combatant(data['name'], data['initiative'], data['health'])
     if combatant:
         config.log(f"-----Adding {combatant} to combatants-----")
-        if any(c.combatant_name.lower() == data['name'].lower() for c in combat_state.combatant_list.combatants):
+        if any(c.combatant_name.lower() == data['name'].lower() for c in combat_state.combatant_list):
             warning_window = tk.Toplevel(frame)
             warning_window.title("Warning")
             warning_label = tk.Label(warning_window, text="Combatant already exists and cant be added.",
